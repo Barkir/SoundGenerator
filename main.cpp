@@ -6,6 +6,6 @@ int main(int argc, char * argv[])
 {
     WavHeader wavh = {};
     WavHeaderInit(&wavh);
-    GenerateAudio(&wavh, "note.wav", 10);
+    GenerateAudio(&wavh, "note.wav", 50);
 
 }

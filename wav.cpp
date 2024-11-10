@@ -35,7 +35,12 @@ int GenerateAudio(WavHeader * wavh, const char * fname, const int duration)
     if (!buffer) return -1;
 
     for (int i = 0; i < buffer_size; i++)
-        buffer[i] = (int16_t) (cos((2 * M_PI * 256.0 * i) / wavh->sample_rate) * 1000);
+    {
+        int t   = i/5;
+        int val = (((t >> 7) | t | (t >> 6)) * 10 + 4 * ((t & (t >> 13)) | (t >> 6))) & 0xFF;
+        buffer[i] = ((val/127.0 - 1) / (1 + pow (15, 17.0*i/buffer_size - 15)) * 200);
+    }
+
 
     fwrite(wavh, 1, sizeof(WavHeader), wavf);
     fwrite(buffer, sizeof(int16_t), buffer_size, wavf);
